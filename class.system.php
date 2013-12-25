@@ -8,6 +8,10 @@
 		{
 			// Init cURL object
 			$this->curl_connection = curl_init();
+
+			// Usually admins use self signed SSL certs
+			curl_setopt($this->curl_connection, CURLOPT_SSL_VERIFYHOST, FALSE);
+			curl_setopt($this->curl_connection, CURLOPT_SSL_VERIFYPEER, FALSE);
 		}
 
 		public function GetNginxData($nginx_url)
