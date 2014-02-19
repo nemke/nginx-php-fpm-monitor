@@ -6,9 +6,9 @@ table thead tr th, table thead tr td, table tfoot tr th, table tfoot tr td {padd
 .td-uri {max-width: 10em; overflow: hidden;}
 .td-uri-long {max-width: 20em; overflow: hidden;}
 
-.totals {text-align: center;}
-.totals tr td {text-align: center;}
-
 table.tablesorter {font-size: 100% !important;}
+
+table.main-stats {}
+table.main-stats tr th, table.main-stats tr td {text-align: left; font-size: 0.9em; padding: 0.3em;}
 
 .copyright {float: right; text-align: right; margin-top: 10px;}

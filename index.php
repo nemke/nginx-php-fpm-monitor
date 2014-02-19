@@ -27,7 +27,7 @@
 		</div>
 		<div class="row">
 			<div class="large-24 columns">
-				<input type="checkbox" checked id="autorefresh" style="margin-left:0; margin-bottom:15px; margin-right: 6px" checked /> Auto refresh
+				<input type="checkbox" checked id="autorefresh" style="margin-left:0; margin-bottom:15px; margin-right: 6px" checked /><label for="autorefresh">Auto refresh</label>
 			</div>
 		</div>
 		<div class="row data-presenter">

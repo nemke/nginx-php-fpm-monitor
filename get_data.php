@@ -32,22 +32,22 @@
 			switch ($name)
 			{
 				case 'start time':
-					$row .= '<td>' . strftime('%d/%m/%Y %H:%M:%S', $value) . '</td>';
+					$row .= '<tr><td>Start time</td><td>' . strftime('%d/%m/%Y %H:%M:%S', $value) . '</td></tr>';
 					$totals['started'] = strftime('%d/%m/%Y %H:%M:%S', $value);
 					break;
 				case 'start since':
-					$row .= '<td>' . number_format($value / 60, 0) . ' m</td>';
+					$row .= '<tr><td>Start since</td><td>' . number_format($value / 60, 0) . ' m</td></tr>';
 					break;
 				case 'listen queue':
-					$row .= '<td>' . $value . '</td>';
+					$row .= '<tr><td>Listen queue</td><td>' . $value . '</td></tr>';
 					$totals['waiting_connections'] = $value;
 					break;
 				case 'total processes':
-					$row .= '<td>' . $value . '</td>';
+					$row .= '<tr><td>Total processes</td><td>' . $value . '</td></tr>';
 					$totals['workers'] = $value;
 					break;
 				default:
-					$row .= '<td>' . $value . '</td>';
+					$row .= '<tr><td>' . $name . '</td><td>' . $value . '</td></tr>';
 					break;
 			}
 			
@@ -130,59 +130,44 @@
 ?>
 
 <div class="row">
-	<div class="large-12 columns">
+	<div class="large-5 columns">
+		<h3>Server</h3>
+		<table class="totals main-stats">
+			<tbody>
+				<tr><td>Server Load</td><td><?php echo $system_info->GetLoad(); ?></td></tr>
+				<tr><td>Server Uptime</td><td><?php echo $system_info->GetUptime(); ?></td></tr>
+			</tbody>
+		</table>
 		<h3>Nginx</h3>
-		<table class="totals">
-			<thead>
-				<th>Active connections</th>
-				<th>Total accepted connections</th>
-				<th>Total handled connections</th>
-				<th>Total requests</th>
-				<th>Requests per connection</th>
-				<th>Reading</th>
-				<th>Writing</th>
-				<th>Waiting</th>
-			</thead>
+		<table class="totals main-stats">
 			<tbody>
-				<tr>
-					<td><?php echo $nginx_data['active_connections']; ?></td>
-					<td><?php echo $nginx_data['total_accepted_connections']; ?></td>
-					<td><?php echo $nginx_data['total_handled_connections']; ?></td>
-					<td><?php echo $nginx_data['total_requests']; ?></td>
-					<td><?php echo $nginx_data['requests_per_connection']; ?></td>
-					<td><?php echo $nginx_data['reading']; ?></td>
-					<td><?php echo $nginx_data['writing']; ?></td>
-					<td><?php echo $nginx_data['waiting']; ?></td>
-				</tr>
+				<tr><td>Active connections</td><td><?php echo $nginx_data['active_connections']; ?></td></tr>
+				<tr><td>Total accepted connections</td><td><?php echo $nginx_data['total_accepted_connections']; ?></td></tr>
+				<tr><td>Total handled connections</td><td><?php echo $nginx_data['total_handled_connections']; ?></td></tr>
+				<tr><td>Total requests</td><td><?php echo $nginx_data['total_requests']; ?></td></tr>
+				<tr><td>Requests per connection</td><td><?php echo $nginx_data['requests_per_connection']; ?></td></tr>
+				<tr><td>Reading</td><td><?php echo $nginx_data['reading']; ?></td></tr>
+				<tr><td>Writing</td><td><?php echo $nginx_data['writing']; ?></td></tr>
+				<tr><td>Waiting</td><td><?php echo $nginx_data['waiting']; ?></td></tr>
 			</tbody>
 		</table>
-	</div>
-	<div class="large-12 columns">
 		<h3>PHP FPM Totals</h3>
-		<table class="totals">
-			<thead>
-				<th>Number of requests</th>
-				<th>Started</th>
-				<th>Waiting connections</th>
-				<th>Workers</th>
-				<th>Server Uptime</th>
-				<th>Server Load</th>
-			</thead>
+		<table class="totals main-stats">
 			<tbody>
-				<tr>
-					<td><?php echo $totals['number_of_requests']; ?></td>
-					<td><?php echo $totals['started']; ?></td>
-					<td><?php echo $totals['waiting_connections']; ?></td>
-					<td><?php echo $totals['workers']; ?></td>
-					<td><?php echo $system_info->GetUptime(); ?></td>
-					<td><?php echo $system_info->GetLoad(); ?></td>
-				</tr>
+				<tr><td>Number of requests</td><td><?php echo $totals['number_of_requests']; ?></td></tr>
+				<tr><td>Started</td><td><?php echo $totals['started']; ?></td></tr>
+				<tr><td>Waiting connections</td><td><?php echo $totals['waiting_connections']; ?></td></tr>
+				<tr><td>Workers</td><td><?php echo $totals['workers']; ?></td></tr>
+			</tbody>
+		</table>
+		<h3>PHP FPM Pools</h3>
+		<table class="totals main-stats">
+			<tbody>
+				<?php echo $main_process_data; ?>
 			</tbody>
 		</table>
 	</div>
-</div>
-<div class="row">
-	<div class="large-24 columns">
+	<div class="large-19 columns">
 		<h3>PHP FPM Requests</h3>
 		<table class="tablesorter">
 			<thead>
@@ -199,10 +184,6 @@
 				<?php echo $requests_data; ?>
 			</tbody>
 		</table>
-	</div>
-</div>
-<div class="row">
-	<div class="large-24 columns">
 		<h3>PHP FPM Requests sorted by number of same URI</h3>
 		<table class="tablesorter">
 			<thead>
@@ -215,37 +196,6 @@
 				<?php echo $totals['requests_by_uri_string'] ?>
 			</tbody>
 		</table>
-	</div>
-</div>
-<div class="row">
-	<div class="large-24 columns">
-		<h3>PHP FPM Pools</h3>
-		<table>
-			<thead>
-				<tr>
-					<th>Pool</th>
-					<th>Manager</th>
-					<th>Start</th>
-					<th>Working for</th>
-					<th>accepted conn</th>
-					<th>listen queue</th>
-					<th>max listen queue</th>
-					<th>listen queue len</th>
-					<th>idle processes</th>
-					<th>active processes</th>
-					<th>total processes</th>
-					<th>max active processes</th>
-					<th>max children reached</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php echo $main_process_data; ?>
-			</tbody>
-		</table>
-	</div>
-</div>
-<div class="row">
-	<div class="large-24 columns">
 		<h3>PHP FPM Workers</h3>
 		<table class="tablesorter">
 			<thead>
