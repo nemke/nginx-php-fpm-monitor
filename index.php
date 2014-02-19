@@ -128,8 +128,8 @@
 	foreach($totals['requests_by_uri'] as $md5_uri => $request_data)
 		$totals['requests_by_uri_string'] .= '<tr><td>' . $request_data['counter'] . '</td><td>' . $request_data['uri'] . '</td></tr>';
 ?>
-<!doctype html>
-<html class="no-js" lang="en">
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en" >
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -138,8 +138,9 @@
 		<link rel="stylesheet" href="css/foundation.min.css" />
 		<link rel="stylesheet" href="js/table-sorter/style.css" />
 		<link rel="stylesheet" href="css/app.css" />
-		<script src="js/modernizr.js"></script>
-		<script src="js/jquery.js"></script>
+		<script src="js/vendor/modernizr.js"></script>
+		<script src="js/vendor/jquery.js"></script>
+		<script src="js/vendor/fastclick.js"></script>
 		<script src="js/jquery.tablesorter.min.js"></script>
 	</head>
 	<body>
@@ -302,6 +303,10 @@
 				</table>
 			</div>
 		</div>
+		<script src="js/foundation.min.js" type="text/javascript"></script>
+		<script>
+			$(document).foundation();
+		</script>
 		<script>
 			function RefreshPage()
 			{
