@@ -127,6 +127,8 @@
 
 	foreach($totals['requests_by_uri'] as $md5_uri => $request_data)
 		$totals['requests_by_uri_string'] .= '<tr><td>' . $request_data['counter'] . '</td><td>' . $request_data['uri'] . '</td></tr>';
+
+	$memory_info = $system_info->GetMemoryInfo();
 ?>
 
 <div class="row">
@@ -134,8 +136,12 @@
 		<h3>Server</h3>
 		<table class="totals main-stats">
 			<tbody>
-				<tr><td>Server Load</td><td><?php echo $system_info->GetLoad(); ?></td></tr>
-				<tr><td>Server Uptime</td><td><?php echo $system_info->GetUptime(); ?></td></tr>
+				<tr><td>Load</td><td><?php echo $system_info->GetLoad(); ?></td></tr>
+				<tr><td>Uptime</td><td><?php echo $system_info->GetUptime(); ?></td></tr>
+				<tr><td>Total RAM</td><td><?php echo $memory_info['MemTotal']; ?></td></tr>
+				<tr><td>Free RAM</td><td><?php echo $memory_info['MemFree']; ?></td></tr>
+				<tr><td>Cached</td><td><?php echo $memory_info['Cached']; ?></td></tr>
+				<tr><td>Buffers</td><td><?php echo $memory_info['Buffers']; ?></td></tr>
 			</tbody>
 		</table>
 		<h3>Nginx</h3>

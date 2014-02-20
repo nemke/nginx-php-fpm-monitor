@@ -2,6 +2,10 @@
 
 	class SystemInfo
 	{
+		const MEMORY_INFORMATION = 'memory_information';
+
+		private $size_units = array('KB', 'MB', 'GB', 'PB');
+		private $properties;
 		private $curl_connection;
 
 		public function __construct()
@@ -12,6 +16,44 @@
 			// Usually admins use self signed SSL certs
 			curl_setopt($this->curl_connection, CURLOPT_SSL_VERIFYHOST, FALSE);
 			curl_setopt($this->curl_connection, CURLOPT_SSL_VERIFYPEER, FALSE);
+		}
+
+		/**
+		* GetProperties - Main Getter function
+		*
+		* @return void
+		* @author Nemanja Andrejevic
+		*/
+		public function GetProperties($props)
+		{
+			// In case properties is array, get array of properties
+			if(is_array($props))
+			{
+				foreach($props as $name)
+					$result[$name] = $this->properties[$name];
+			}
+			else
+				$result = $this->properties[$props];
+
+			return $result;
+		}
+
+		/**
+		* SetProperties - Main Setter function
+		*
+		* @return void
+		* @author Nemanja Andrejevic
+		*/
+		public function SetProperties($property, $value = '')
+		{
+			// In case properties is array, set array of properties
+			if(is_array($property))
+			{
+				foreach($property as $key => $value)
+					$this->properties[$key] = $value;
+			}
+			else
+				$this->properties[$property] = $value;
 		}
 
 		public function GetNginxData($nginx_url)
@@ -103,6 +145,39 @@
 				$uptime_string = $uptime['seconds'] . ' sec';
 
 			return $uptime_string;
+		}
+
+
+		public function GetMemoryInfo() 
+		{
+			$meminfo = array();
+			$data = explode("\n", file_get_contents("/proc/meminfo"));
+
+			if (empty($data))
+				return FALSE;
+
+			foreach ($data as $line)
+			{
+				if(empty($line))
+					continue;
+
+				list($key, $val) = explode(":", $line);
+
+				$val = (int) $val;
+				$size_unit = 0;
+
+				while ($val > 1024)
+				{
+					$val = $val / 1024;
+					$size_unit++;
+				}
+
+				$meminfo[$key] = round($val, 1) . ' ' . $this->size_units[$size_unit];
+			}
+
+			$this->properties[self::MEMORY_INFORMATION] = $meminfo;
+
+			return $meminfo;
 		}
 	}
 
