@@ -147,7 +147,6 @@
 			return $uptime_string;
 		}
 
-
 		public function GetMemoryInfo() 
 		{
 			$meminfo = array();

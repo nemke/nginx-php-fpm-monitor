@@ -138,10 +138,9 @@
 			<tbody>
 				<tr><td>Load</td><td><?php echo $system_info->GetLoad(); ?></td></tr>
 				<tr><td>Uptime</td><td><?php echo $system_info->GetUptime(); ?></td></tr>
-				<tr><td>Total RAM</td><td><?php echo $memory_info['MemTotal']; ?></td></tr>
-				<tr><td>Free RAM</td><td><?php echo $memory_info['MemFree']; ?></td></tr>
-				<tr><td>Cached</td><td><?php echo $memory_info['Cached']; ?></td></tr>
-				<tr><td>Buffers</td><td><?php echo $memory_info['Buffers']; ?></td></tr>
+				<tr><td>Total / Free RAM</td><td><?php echo $memory_info['MemTotal'] . ' / ' . $memory_info['MemFree']; ?></td></tr>
+				<tr><td>Cached / Buffers</td><td><?php echo $memory_info['Cached'] . ' / ' . $memory_info['Buffers']; ?></td></tr>
+				<tr><td>Total / Free Swap</td><td><?php echo $memory_info['SwapTotal'] . ' / ' . $memory_info['SwapFree']; ?></td></tr>
 			</tbody>
 		</table>
 		<h3>Nginx</h3>
