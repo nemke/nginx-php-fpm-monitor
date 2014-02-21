@@ -4,7 +4,7 @@
 	{
 		const MEMORY_INFORMATION = 'memory_information';
 
-		private $size_units = array('KB', 'MB', 'GB', 'PB');
+		private $size_units = array('KB', 'MB', 'GB', 'TB', 'PB');
 		private $properties;
 		private $curl_connection;
 
@@ -82,7 +82,7 @@
 			$nginx_data['total_handled_connections'] = $response_text[2][0];
 			$nginx_data['total_requests'] = $response_text[2][0];
 			$nginx_data['requests_per_connection'] = number_format($nginx_data['total_requests'] / $nginx_data['total_handled_connections'], 2);
-			
+
 			$response_text[3] = explode(' ', trim($response_text[3]));
 			$nginx_data['reading'] = (int) $response_text[3][1];
 			$nginx_data['writing'] = (int) $response_text[3][3];
@@ -178,5 +178,37 @@
 
 			return $meminfo;
 		}
+
+		public function NginxConnectionsPerIP() 
+		{
+			$connections = shell_exec('netstat -taupen | grep nginx');
+			$connections = explode("\n", $connections);
+			$ips = array();
+			$ip_count_column = array();
+
+			foreach($connections as $key => $data)
+			{
+				$connections[$key] = explode('+++', preg_replace("/\s+/", "+++", $data));
+
+				if(!isset($connections[$key][4]) || $connections[$key][4] == '0.0.0.0:*')
+					continue;
+
+				$ip = explode(':', $connections[$key][4]);
+				$port = $ip[1];
+				$ip = $ip[0];
+
+				if(isset($ips[$ip]))
+					$ips[$ip]['count']++;
+				else
+					$ips[$ip] = array('ip' => $ip, 'count' => 1);
+
+				$ip_count_column[$ip] = $ips[$ip]['count'];
+			}
+
+			array_multisort($ip_count_column, SORT_DESC, $ips);
+
+			return $ips;
+		}
 	}
 
+// END

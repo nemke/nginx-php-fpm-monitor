@@ -129,6 +129,7 @@
 		$totals['requests_by_uri_string'] .= '<tr><td>' . $request_data['counter'] . '</td><td>' . $request_data['uri'] . '</td></tr>';
 
 	$memory_info = $system_info->GetMemoryInfo();
+	$nginx_ips = $system_info->NginxConnectionsPerIP();
 ?>
 
 <div class="row">
@@ -199,6 +200,21 @@
 			</thead>
 			<tbody>
 				<?php echo $totals['requests_by_uri_string'] ?>
+			</tbody>
+		</table>
+		<h3>Nginx connections per IP</h3>
+		<table class="tablesorter">
+			<thead>
+				<tr>
+					<th>Number of requests</th>
+					<th>IP</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					foreach ($nginx_ips as $key => $value)
+						echo '<tr><td>' . $value['count'] . '</td><td>' . $value['ip'] . '</td></tr>';
+				?>
 			</tbody>
 		</table>
 		<h3>PHP FPM Workers</h3>
