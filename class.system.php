@@ -58,61 +58,78 @@
 
 		public function GetNginxData($nginx_url)
 		{
-			$nginx_data = array();
+			try
+			{
+				$nginx_data = array();
 
-			// Setting cURL data
-			curl_setopt($this->curl_connection, CURLOPT_URL, $nginx_url);
-			curl_setopt($this->curl_connection, CURLOPT_RETURNTRANSFER, TRUE);
-			curl_setopt($this->curl_connection, CURLOPT_TIMEOUT, 15);
+				// Setting cURL data
+				curl_setopt($this->curl_connection, CURLOPT_URL, $nginx_url);
+				curl_setopt($this->curl_connection, CURLOPT_RETURNTRANSFER, TRUE);
+				curl_setopt($this->curl_connection, CURLOPT_TIMEOUT, 15);
 
-			// Executing URL request
-			$response_text = curl_exec($this->curl_connection);
+				// Executing URL request
+				$response_text = curl_exec($this->curl_connection);
 
-			// Checking if there was any errors
-			if($response_text === FALSE)
-				throw new Exception(curl_error($this->curl_connection), curl_errno($this->curl_connection));
+				// Checking if there was any errors
+				if($response_text === FALSE)
+					throw new Exception(curl_error($this->curl_connection), curl_errno($this->curl_connection));
 
-			$response_text = explode("\n", $response_text);
+				$response_text = explode("\n", $response_text);
 
-			$response_text[0] = explode(':', $response_text[0]);
-			$nginx_data['active_connections'] = (int) $response_text[0][1];
+				$response_text[0] = explode(':', $response_text[0]);
+				$nginx_data['active_connections'] = (int) $response_text[0][1];
 
-			$response_text[2] = explode(' ', trim($response_text[2]));
-			$nginx_data['total_accepted_connections'] = $response_text[2][0];
-			$nginx_data['total_handled_connections'] = $response_text[2][0];
-			$nginx_data['total_requests'] = $response_text[2][0];
-			$nginx_data['requests_per_connection'] = number_format($nginx_data['total_requests'] / $nginx_data['total_handled_connections'], 2);
+				$response_text[2] = explode(' ', trim($response_text[2]));
+				$nginx_data['total_accepted_connections'] = $response_text[2][0];
+				$nginx_data['total_handled_connections'] = $response_text[2][0];
+				$nginx_data['total_requests'] = $response_text[2][0];
+				$nginx_data['requests_per_connection'] = number_format($nginx_data['total_requests'] / $nginx_data['total_handled_connections'], 2);
 
-			$response_text[3] = explode(' ', trim($response_text[3]));
-			$nginx_data['reading'] = (int) $response_text[3][1];
-			$nginx_data['writing'] = (int) $response_text[3][3];
-			$nginx_data['waiting'] = (int) $response_text[3][5];
+				$response_text[3] = explode(' ', trim($response_text[3]));
+				$nginx_data['reading'] = (int) $response_text[3][1];
+				$nginx_data['writing'] = (int) $response_text[3][3];
+				$nginx_data['waiting'] = (int) $response_text[3][5];
 
-			return $nginx_data;
+				return $nginx_data;
+			}
+			catch(Exception $e)
+			{
+				return FALSE;
+			}
 		}
 
 		public function GetPHPFPMData($php_fpm_url)
 		{
-			// Setting cURL data
-			curl_setopt($this->curl_connection, CURLOPT_URL, $php_fpm_url);
-			curl_setopt($this->curl_connection, CURLOPT_RETURNTRANSFER, TRUE);
-			curl_setopt($this->curl_connection, CURLOPT_TIMEOUT, 15);
+			try
+			{
+				// Setting cURL data
+				curl_setopt($this->curl_connection, CURLOPT_URL, $php_fpm_url);
+				curl_setopt($this->curl_connection, CURLOPT_RETURNTRANSFER, TRUE);
+				curl_setopt($this->curl_connection, CURLOPT_TIMEOUT, 15);
 
-			// Executing URL request
-			$response_text = curl_exec($this->curl_connection);
+				// Executing URL request
+				$response_text = curl_exec($this->curl_connection);
 
-			// Checking if there was any errors
-			if($response_text === FALSE)
-				throw new Exception(curl_error($this->curl_connection), curl_errno($this->curl_connection));
+				// Checking if there was any errors
+				if($response_text === FALSE)
+					throw new Exception(curl_error($this->curl_connection), curl_errno($this->curl_connection));
 
-			// Decoding json data
-			$php_fpm_data = json_decode(utf8_encode($response_text), TRUE);
+				// Decoding json data
+				$php_fpm_data = json_decode(utf8_encode($response_text), TRUE);
 
-			return $php_fpm_data;
+				return $php_fpm_data;
+			}
+			catch(Exception $e)
+			{
+				return FALSE;
+ 			}
 		}
 
 		public function GetLoad()
 		{
+			if(function_exists('sys_getloadavg') === FALSE)
+				return 'Can\'t get load data.';
+
 			$load = sys_getloadavg();
 
 			$load_string = number_format($load[0], 2) . ', ' . number_format($load[1], 2) . ', ' . number_format($load[2], 2);
