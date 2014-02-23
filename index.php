@@ -26,8 +26,18 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="large-24 columns">
-				<input type="checkbox" checked id="autorefresh" style="margin-left:0; margin-bottom:15px; margin-right: 6px" checked /><label for="autorefresh">Auto refresh</label>
+			<div class="small-2 columns">
+				<a id="autorefresh" href="#" class="button tiny radius" data-refresh="On">Stop Refresh</a>
+			</div>
+			<div class="small-22 columns">
+				<div class="row collapse">
+					<div class="small-2 small-offset-20 columns">
+						<input type="text" id="refresh_time" placeholder="">
+					</div>
+					<div class="small-2 columns">
+						<a id="change_refresh_interval" href="#" class="button postfix">Refresh rate (ms)</a>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="row data-presenter">
@@ -41,9 +51,16 @@
 		<script>
 			var refresh_interval = 1000;
 
+			$('#refresh_time').val(refresh_interval);
+
+			$('#change_refresh_interval').click(function()
+			{
+				refresh_interval = $('#refresh_time').val();
+			});
+
 			function RefreshData()
 			{
-				if($('#autorefresh').prop('checked'))
+				if($('#autorefresh').attr('data-refresh') == 'On')
 				{
 					$.get('get_data.php', function(data)
 					{
@@ -63,13 +80,23 @@
 				$(document).keydown(function(event)
 				{
 					if(event.which == 27)
-						$('#autorefresh').prop('checked', false);
+					{
+						$(this).attr('data-refresh', 'Off');
+						$(this).text('Start Refresh');
+					}
 				});
 
-				$("#autorefresh").change(function()
+				$('#autorefresh').click(function()
 				{
-					if($(this).prop('checked'))
+					if($(this).attr('data-refresh') == 'On')
 					{
+						$(this).attr('data-refresh', 'Off');
+						$(this).text('Start Refresh');
+					}
+					else
+					{
+						$(this).attr('data-refresh', 'On');
+						$(this).text('Stop Refresh');
 						RefreshData();
 					}
 				});
