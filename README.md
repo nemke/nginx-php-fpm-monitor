@@ -11,4 +11,4 @@ To use this monitor you need to setup Nginx and PHP FPM status pages and then ch
 License:
 Use it freely on your own servers. If you want to do something with it commercially please contact us first.
 
-Developed by NM Design Studio - www.nmdesing.rs
+Developed by NM Design Studio - www.nmdesign.rs
