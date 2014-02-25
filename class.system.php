@@ -226,6 +226,45 @@
 
 			return $ips;
 		}
+
+		public function PHPRamInfo() 
+		{
+			$processes = shell_exec('ps aux | grep php-fpm');
+			$processes = explode("\n", $processes);
+
+			$totals = array(
+				'average_ram' => 0,
+				'number_of_processes' => 0,
+			);
+
+			foreach($processes as $key => $data)
+			{
+				if(mb_strpos($data, 'grep') !== FALSE)
+					continue;
+
+				$data = explode('+++', preg_replace("/\s+/", "+++", $data));
+
+				if(!isset($data[5]))
+					continue;
+
+				$totals['average_ram'] += $data[5];
+				$totals['number_of_processes']++;
+			}
+
+			$totals['average_ram'] = $totals['average_ram'] / $totals['number_of_processes'];
+
+			$size_unit = 0;
+
+			while ($totals['average_ram'] > 1024)
+			{
+				$totals['average_ram'] = $totals['average_ram'] / 1024;
+				$size_unit++;
+			}
+
+			$totals['average_ram'] = round($totals['average_ram'], 1) . ' ' . $this->size_units[$size_unit];
+
+			return $totals;
+		}
 	}
 
 // END

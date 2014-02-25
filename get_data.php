@@ -130,6 +130,7 @@
 
 	$memory_info = $system_info->GetMemoryInfo();
 	$nginx_ips = $system_info->NginxConnectionsPerIP();
+	$php_ram_info = $system_info->PHPRamInfo();
 ?>
 
 <div class="row">
@@ -164,6 +165,7 @@
 				<tr><td>Started</td><td><?php echo $totals['started']; ?></td></tr>
 				<tr><td>Waiting connections</td><td><?php echo $totals['waiting_connections']; ?></td></tr>
 				<tr><td>Workers</td><td><?php echo $totals['workers']; ?></td></tr>
+				<tr><td>Average RAM</td><td><?php echo $php_ram_info['average_ram']; ?></td></tr>
 			</tbody>
 		</table>
 		<h3>PHP FPM Pools</h3>
