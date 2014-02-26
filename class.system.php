@@ -227,7 +227,7 @@
 			return $ips;
 		}
 
-		public function PHPRamInfo() 
+		public function PHPRamInfo()
 		{
 			$processes = shell_exec('ps aux | grep php-fpm');
 			$processes = explode("\n", $processes);

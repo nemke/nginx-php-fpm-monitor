@@ -21,6 +21,10 @@
 		'workers' => 0,
 		'requests_by_uri' => array(),
 		'requests_by_uri_string' => '',
+		'average_ram' => 0,
+		'number_of_ram_processes' => 0,
+		'average_cpu' => 0,
+		'number_of_cpu_processes' => 0,
 	);
 
 	foreach ($php_fpm_data as $name => $value)
@@ -88,9 +92,21 @@
 					$workers_row .= '<td>' . strftime('%d/%m/%Y %H:%M:%S', $value) . '</td>';
 					break;
 				case 'last request cpu':
+					if($value != 0)
+					{
+						$totals['average_cpu'] += $value;
+						$totals['number_of_cpu_processes']++;
+					}
+
 					$workers_row .= '<td>' . $value . '</td>';
 					break;
 				case 'last request memory':
+					if($value != 0)
+					{
+						$totals['average_ram'] += $value;
+						$totals['number_of_ram_processes']++;
+					}
+
 					$workers_row .= '<td>' . $value / 1024 . '</td>';
 					break;
 				case 'request uri':
@@ -124,6 +140,18 @@
 
 		$workers_data .= $workers_row . '</tr>';
 	}
+
+	$size_unit = 0;
+	$size_units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+
+	while ($totals['average_ram'] > 1023)
+	{
+		$totals['average_ram'] = $totals['average_ram'] / 1024;
+		$size_unit++;
+	}
+
+	$totals['average_ram'] = round($totals['average_ram'] / $totals['number_of_ram_processes'], 1) . ' ' . $size_units[$size_unit];
+	$totals['average_cpu'] = round($totals['average_cpu'] / $totals['number_of_cpu_processes'], 1) . ' %';
 
 	foreach($totals['requests_by_uri'] as $md5_uri => $request_data)
 		$totals['requests_by_uri_string'] .= '<tr><td>' . $request_data['counter'] . '</td><td>' . $request_data['uri'] . '</td></tr>';
@@ -165,7 +193,8 @@
 				<tr><td>Started</td><td><?php echo $totals['started']; ?></td></tr>
 				<tr><td>Waiting connections</td><td><?php echo $totals['waiting_connections']; ?></td></tr>
 				<tr><td>Workers</td><td><?php echo $totals['workers']; ?></td></tr>
-				<tr><td>Average RAM</td><td><?php echo $php_ram_info['average_ram']; ?></td></tr>
+				<tr><td>Worker Average CPU</td><td><?php echo $totals['average_cpu'] ?></td></tr>
+				<tr><td>Worker Average RAM</td><td><?php echo $totals['average_ram'] ?></td></tr>
 			</tbody>
 		</table>
 		<h3>PHP FPM Pools</h3>
@@ -234,7 +263,7 @@
 					<th>Lenght</th>
 					<th>User</th>
 					<th>Script</th>
-					<th>CPU</th>
+					<th>CPU (%)</th>
 					<th>Memory (kb)</th>
 				</tr>
 			</thead>
