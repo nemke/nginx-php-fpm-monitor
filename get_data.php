@@ -14,9 +14,9 @@
 
 	// Get Nginx statistics
 	$nginx_info->SetProperties(NginxInfo::NGINX_STATUS_PAGE, $nginx_url);
-	$nginx_data = $nginx_info->GetNginxData();
-	$nginx_ips = $nginx_info->NginxConnectionsPerIP();
-	//$php_ram_info = $nginx_info->PHPRamInfo();
+	$nginx_data = $nginx_info->GetStatistics();
+	$nginx_ips = $nginx_info->GetConnectionsPerIP();
+	$nginx_sys_res = $nginx_info->GetSystemResources();
 
 	// Get PHP FPM statistics
 	$php_fpm_info->SetProperties(PhpFpmInfo::PHP_FPM_STATUS_PAGE, $php_fpm_url);
@@ -51,6 +51,8 @@
 				<tr><td>Reading</td><td><?php echo $nginx_data['reading']; ?></td></tr>
 				<tr><td>Writing</td><td><?php echo $nginx_data['writing']; ?></td></tr>
 				<tr><td>Waiting</td><td><?php echo $nginx_data['waiting']; ?></td></tr>
+				<tr><td>Total RAM usage</td><td><?php echo $nginx_sys_res['total_ram']; ?></td></tr>
+				<tr><td>Total CPU usage</td><td><?php echo $nginx_sys_res['total_cpu']; ?></td></tr>
 			</tbody>
 		</table>
 		<h3>PHP FPM Totals</h3>

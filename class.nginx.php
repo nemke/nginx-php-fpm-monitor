@@ -4,6 +4,7 @@
 	{
 		const NGINX_STATUS_PAGE = 'nginx_status_page';
 
+		private $size_units = array('KB', 'MB', 'GB', 'TB', 'PB');
 		private $properties;
 		private $curl_connection;
 
@@ -55,7 +56,7 @@
 				$this->properties[$property] = $value;
 		}
 
-		public function GetNginxData()
+		public function GetStatistics()
 		{
 			try
 			{
@@ -97,7 +98,7 @@
 			}
 		}
 
-		public function NginxConnectionsPerIP() 
+		public function GetConnectionsPerIP() 
 		{
 			$connections = shell_exec('netstat -taupen | grep nginx');
 			$connections = explode("\n", $connections);
@@ -128,14 +129,14 @@
 			return $ips;
 		}
 
-		public function PHPRamInfo()
+		public function GetSystemResources()
 		{
-			$processes = shell_exec('ps aux | grep php-fpm');
+			$processes = shell_exec('ps aux | grep nginx:');
 			$processes = explode("\n", $processes);
 
 			$totals = array(
-				'average_ram' => 0,
-				'number_of_processes' => 0,
+				'total_ram' => 0,
+				'total_cpu' => 0
 			);
 
 			foreach($processes as $key => $data)
@@ -145,24 +146,23 @@
 
 				$data = explode('+++', preg_replace("/\s+/", "+++", $data));
 
-				if(!isset($data[5]))
-					continue;
+				if(isset($data[2]))
+					$totals['total_cpu'] += (float) $data[2];
 
-				$totals['average_ram'] += $data[5];
-				$totals['number_of_processes']++;
+				if(isset($data[5]))
+					$totals['total_ram'] += $data[5];
 			}
-
-			$totals['average_ram'] = $totals['average_ram'] / $totals['number_of_processes'];
 
 			$size_unit = 0;
 
-			while ($totals['average_ram'] > 1024)
+			while ($totals['total_ram'] > 1024)
 			{
-				$totals['average_ram'] = $totals['average_ram'] / 1024;
+				$totals['total_ram'] = $totals['total_ram'] / 1024;
 				$size_unit++;
 			}
 
-			$totals['average_ram'] = round($totals['average_ram'], 1) . ' ' . $this->size_units[$size_unit];
+			$totals['total_ram'] = round($totals['total_ram'], 2) . ' ' . $this->size_units[$size_unit];
+			$totals['total_cpu'] = number_format($totals['total_cpu'], 2);
 
 			return $totals;
 		}
