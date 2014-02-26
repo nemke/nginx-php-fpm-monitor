@@ -5,19 +5,22 @@
 
 	require_once 'config.php';
 	require_once 'class.system.php';
+	require_once 'class.nginx.php';
 	require_once 'class.php.fpm.php';
 
 	$system_info = new SystemInfo();
 	$php_fpm_info = new PhpFpmInfo();
+	$nginx_info = new NginxInfo();
 
 	// Get Nginx statistics
-	$nginx_data = $system_info->GetNginxData($nginx_url);
-	$nginx_ips = $system_info->NginxConnectionsPerIP();
+	$nginx_info->SetProperties(NginxInfo::NGINX_STATUS_PAGE, $nginx_url);
+	$nginx_data = $nginx_info->GetNginxData();
+	$nginx_ips = $nginx_info->NginxConnectionsPerIP();
+	//$php_ram_info = $nginx_info->PHPRamInfo();
 
 	// Get PHP FPM statistics
 	$php_fpm_info->SetProperties(PhpFpmInfo::PHP_FPM_STATUS_PAGE, $php_fpm_url);
 	$php_fpm_data = $php_fpm_info->GetPHPFPMData();
-	//$php_ram_info = $system_info->PHPRamInfo();
 
 	// Get System Stats
 	$system_load = $system_info->GetLoad();
