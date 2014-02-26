@@ -98,33 +98,6 @@
 			}
 		}
 
-		public function GetPHPFPMData($php_fpm_url)
-		{
-			try
-			{
-				// Setting cURL data
-				curl_setopt($this->curl_connection, CURLOPT_URL, $php_fpm_url);
-				curl_setopt($this->curl_connection, CURLOPT_RETURNTRANSFER, TRUE);
-				curl_setopt($this->curl_connection, CURLOPT_TIMEOUT, 15);
-
-				// Executing URL request
-				$response_text = curl_exec($this->curl_connection);
-
-				// Checking if there was any errors
-				if($response_text === FALSE)
-					throw new Exception(curl_error($this->curl_connection), curl_errno($this->curl_connection));
-
-				// Decoding json data
-				$php_fpm_data = json_decode(utf8_encode($response_text), TRUE);
-
-				return $php_fpm_data;
-			}
-			catch(Exception $e)
-			{
-				return FALSE;
- 			}
-		}
-
 		public function GetLoad()
 		{
 			if(function_exists('sys_getloadavg') === FALSE)
