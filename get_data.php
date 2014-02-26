@@ -59,6 +59,7 @@
 				<tr><td>Workers</td><td><?php echo $php_fpm_data['totals']['workers']; ?></td></tr>
 				<tr><td>Worker Average CPU</td><td><?php echo $php_fpm_data['totals']['average_cpu'] ?></td></tr>
 				<tr><td>Worker Average RAM</td><td><?php echo $php_fpm_data['totals']['average_ram'] ?></td></tr>
+				<tr><td>Worker Average Duration</td><td><?php echo $php_fpm_data['totals']['average_duration'] ?></td></tr>
 			</tbody>
 		</table>
 		<h3>PHP FPM Pools</h3>
