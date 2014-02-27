@@ -5,6 +5,7 @@
 		const MEMORY_TOTAL = 'memory_total';
 		const MEMORY_FREE = 'memory_free';
 		const OPCACHE_TYPE = 'opcache_type';
+		const OPCACHЕ_HIT_RATE = 'opcache_hit_rate';
 
 		private $size_units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
 
@@ -74,6 +75,7 @@
 			$opcache_configuration = opcache_get_configuration();
 
 			$status_data[self::OPCACHE_TYPE] = $opcache_configuration['version']['opcache_product_name'] . ' ' . $opcache_configuration['version']['version'];
+			$status_data[self::OPCACHЕ_HIT_RATE] = round($opcache_data['opcache_statistics']['opcache_hit_rate'], 2);
 			$status_data[self::MEMORY_TOTAL] = $this->CalculateSize($opcache_configuration['directives']['opcache.memory_consumption']);
 			$status_data[self::MEMORY_FREE] = $this->CalculateSize($opcache_data['memory_usage']['free_memory']);
 

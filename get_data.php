@@ -68,7 +68,8 @@
 					if($php_cache_data)
 						echo '
 							<tr><td>Opcode cache</td><td>' . $php_cache_data[PhpCacheInfo::OPCACHE_TYPE] . '</td></tr>
-							<tr><td>Opcode RAM Total / Free</td><td>' . $php_cache_data[PhpCacheInfo::MEMORY_TOTAL] . ' / ' . $php_cache_data[PhpCacheInfo::MEMORY_FREE]  .  '</td></tr>';
+							<tr><td>Opcode RAM Total / Free</td><td>' . $php_cache_data[PhpCacheInfo::MEMORY_TOTAL] . ' / ' . $php_cache_data[PhpCacheInfo::MEMORY_FREE]  .  '</td></tr>
+							<tr><td>Opcode hit rate</td><td>' . $php_cache_data[PhpCacheInfo::OPCACHЕ_HIT_RATE]  .  ' %</td></tr>';
 				?>
 			</tbody>
 		</table>
