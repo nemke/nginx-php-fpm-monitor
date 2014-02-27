@@ -18,11 +18,9 @@
 		<div class="row">
 			<div class="large-24 columns">
 				<span class="copyright">
-					Designed by <a href="http://www.nmdesign.rs/">NM Design</a>.
-					<br />
-					All rights reserved.
+					Designed by <a href="http://www.nmdesign.rs/">NM Design</a>. All rights reserved.
 				</span>
-				<h1>Nginx - PHP FPM Monitor</h1>
+				<h3>Nginx - PHP FPM Monitor</h3>
 			</div>
 		</div>
 		<div class="row">
@@ -40,9 +38,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row data-presenter">
-			<div class="large-24 columns">
-			</div>
+		<div class="data-presenter">
 		</div>
 		<script src="js/foundation.min.js" type="text/javascript"></script>
 		<script>

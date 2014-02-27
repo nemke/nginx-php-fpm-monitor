@@ -33,7 +33,7 @@
 
 <div class="row">
 	<div class="large-5 columns">
-		<h3>Server</h3>
+		<h5>Server</h5>
 		<table class="totals main-stats">
 			<tbody>
 				<tr><td>Load</td><td><?php echo $system_load; ?></td></tr>
@@ -43,7 +43,7 @@
 				<tr><td>Total / Free Swap</td><td><?php echo $memory_info['SwapTotal'] . ' / ' . $memory_info['SwapFree']; ?></td></tr>
 			</tbody>
 		</table>
-		<h3>Nginx</h3>
+		<h5>Nginx</h5>
 		<table class="totals main-stats">
 			<tbody>
 				<tr><td>Active connections</td><td><?php echo $nginx_data['active_connections']; ?></td></tr>
@@ -54,7 +54,7 @@
 				<tr><td>Total CPU usage</td><td><?php echo $nginx_sys_res['total_cpu']; ?></td></tr>
 			</tbody>
 		</table>
-		<h3>PHP FPM Totals</h3>
+		<h5>PHP FPM Totals</h5>
 		<table class="totals main-stats">
 			<tbody>
 				<tr><td>Number of requests</td><td><?php echo $php_fpm_data['totals']['number_of_requests']; ?></td></tr>
@@ -69,11 +69,11 @@
 						echo '
 							<tr><td>Opcode cache</td><td>' . $php_cache_data[PhpCacheInfo::OPCACHE_TYPE] . '</td></tr>
 							<tr><td>Opcode RAM Total / Free</td><td>' . $php_cache_data[PhpCacheInfo::MEMORY_TOTAL] . ' / ' . $php_cache_data[PhpCacheInfo::MEMORY_FREE]  .  '</td></tr>
-							<tr><td>Opcode hit rate</td><td>' . $php_cache_data[PhpCacheInfo::OPCACHE_HIT_RATE]  .  ' %</td></tr>';
+							<tr><td>Opcode hit rate</td><td>' . $php_cache_data[PhpCacheInfo::OPCACHЕ_HIT_RATE]  .  ' %</td></tr>';
 				?>
 			</tbody>
 		</table>
-		<h3>PHP FPM Pools</h3>
+		<h5>PHP FPM Pools</h5>
 		<table class="totals main-stats">
 			<tbody>
 				<?php echo $php_fpm_data['main_process_data']; ?>
@@ -81,7 +81,7 @@
 		</table>
 	</div>
 	<div class="large-19 columns">
-		<h3>PHP FPM Requests</h3>
+		<h5>PHP FPM Requests</h5>
 		<table class="tablesorter">
 			<thead>
 				<tr>
@@ -97,7 +97,7 @@
 				<?php echo $php_fpm_data['requests_data']; ?>
 			</tbody>
 		</table>
-		<h3>PHP FPM Requests sorted by number of same URI</h3>
+		<h5>PHP FPM Requests sorted by number of same URI</h5>
 		<table class="tablesorter">
 			<thead>
 				<tr>
@@ -109,7 +109,7 @@
 				<?php echo $php_fpm_data['totals']['requests_by_uri_string'] ?>
 			</tbody>
 		</table>
-		<h3>Nginx connections per IP</h3>
+		<h5>Nginx connections per IP</h5>
 		<table class="tablesorter">
 			<thead>
 				<tr>
@@ -124,7 +124,7 @@
 				?>
 			</tbody>
 		</table>
-		<h3>PHP FPM Workers</h3>
+		<h5>PHP FPM Workers</h5>
 		<table class="tablesorter">
 			<thead>
 				<tr>
