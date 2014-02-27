@@ -7,10 +7,12 @@
 	require_once 'class.system.php';
 	require_once 'class.nginx.php';
 	require_once 'class.php.fpm.php';
+	require_once 'class.php.cache.php';
 
 	$system_info = new SystemInfo();
-	$php_fpm_info = new PhpFpmInfo();
 	$nginx_info = new NginxInfo();
+	$php_fpm_info = new PhpFpmInfo();
+	$php_cache_info = new PhpCacheInfo();
 
 	// Get Nginx statistics
 	$nginx_info->SetProperties(NginxInfo::NGINX_STATUS_PAGE, $nginx_url);
@@ -21,6 +23,7 @@
 	// Get PHP FPM statistics
 	$php_fpm_info->SetProperties(PhpFpmInfo::PHP_FPM_STATUS_PAGE, $php_fpm_url);
 	$php_fpm_data = $php_fpm_info->GetPHPFPMData();
+	$php_cache_data = $php_cache_info->GetOpcodeCacheData();
 
 	// Get System Stats
 	$system_load = $system_info->GetLoad();
@@ -44,10 +47,6 @@
 		<table class="totals main-stats">
 			<tbody>
 				<tr><td>Active connections</td><td><?php echo $nginx_data['active_connections']; ?></td></tr>
-				<tr><td>Total accepted connections</td><td><?php echo $nginx_data['total_accepted_connections']; ?></td></tr>
-				<tr><td>Total handled connections</td><td><?php echo $nginx_data['total_handled_connections']; ?></td></tr>
-				<tr><td>Total requests</td><td><?php echo $nginx_data['total_requests']; ?></td></tr>
-				<tr><td>Requests per connection</td><td><?php echo $nginx_data['requests_per_connection']; ?></td></tr>
 				<tr><td>Reading</td><td><?php echo $nginx_data['reading']; ?></td></tr>
 				<tr><td>Writing</td><td><?php echo $nginx_data['writing']; ?></td></tr>
 				<tr><td>Waiting</td><td><?php echo $nginx_data['waiting']; ?></td></tr>
@@ -65,6 +64,12 @@
 				<tr><td>Worker Average CPU</td><td><?php echo $php_fpm_data['totals']['average_cpu'] ?></td></tr>
 				<tr><td>Worker Average RAM</td><td><?php echo $php_fpm_data['totals']['average_ram'] ?></td></tr>
 				<tr><td>Worker Average Duration</td><td><?php echo $php_fpm_data['totals']['average_duration'] ?></td></tr>
+				<?php
+					if($php_cache_data)
+						echo '
+							<tr><td>Opcode cache</td><td>' . $php_cache_data[PhpCacheInfo::OPCACHE_TYPE] . '</td></tr>
+							<tr><td>Opcode RAM Total / Free</td><td>' . $php_cache_data[PhpCacheInfo::MEMORY_TOTAL] . ' / ' . $php_cache_data[PhpCacheInfo::MEMORY_FREE]  .  '</td></tr>';
+				?>
 			</tbody>
 		</table>
 		<h3>PHP FPM Pools</h3>
