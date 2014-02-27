@@ -10,6 +10,6 @@ Installation:
 - If section "Nginx connections per IP" is empty, that is because you are using different user for php-fpm and different for nginx 
 
 License:
-Use it freely on your own servers. If you want to do something with it commercially please contact us first.
+Use it freely on your own servers. If you want to do something with it commercially please contact us first via email nemanja@nmdesign.rs
 
 Developed by NM Design Studio - www.nmdesign.rs
