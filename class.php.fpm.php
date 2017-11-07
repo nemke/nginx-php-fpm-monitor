@@ -240,9 +240,9 @@
 				$size_unit++;
 			}
 
-			$php_data['totals']['average_ram'] = round($php_data['totals']['average_ram'] / $php_data['totals']['number_of_ram_processes'], 1) . ' ' . $this->size_units[$size_unit];
-			$php_data['totals']['average_cpu'] = round($php_data['totals']['average_cpu'] / $php_data['totals']['number_of_cpu_processes'], 1) . ' %';
-			$php_data['totals']['average_duration'] = round(($php_data['totals']['average_duration'] / $php_data['totals']['number_of_duration_processes']) / 1000 / 1000, 3) . ' seconds';
+			$php_data['totals']['average_ram'] = round($php_data['totals']['average_ram'] / ($php_data['totals']['number_of_ram_processes']?:1), 1) . ' ' . $this->size_units[$size_unit];
+			$php_data['totals']['average_cpu'] = round($php_data['totals']['average_cpu'] / ($php_data['totals']['number_of_cpu_processes']?:1), 1) . ' %';
+			$php_data['totals']['average_duration'] = round(($php_data['totals']['average_duration'] / ($php_data['totals']['number_of_duration_processes']?:1)) / 1000 / 1000, 3) . ' seconds';
 
 			foreach($php_data['totals']['requests_by_uri'] as $md5_uri => $request_data)
 				$php_data['totals']['requests_by_uri_string'] .= '<tr><td>' . $request_data['counter'] . '</td><td>' . $request_data['uri'] . '</td></tr>';
