@@ -1,4 +1,4 @@
-nginx-php-fpm-monitor
+nginx-fpm-status
 =====================
 
 Nginx - PHP FPM Monitor
@@ -13,3 +13,7 @@ License:
 Use it freely on your own servers. If you want to do something with it commercially please contact us first via email nemanja@nmdesign.rs
 
 Developed by NM Design Studio - www.nmdesign.rs
+
+git clone https://github.com/zhushengwen/nginx-fpm-status.git
+cd nginx-fpm-status
+php -S localhost:8000
